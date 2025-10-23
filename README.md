@@ -3,18 +3,27 @@ Python classes from least to most complicated to complete the code for. Rough es
  
 ## Least complicated:
 Course - Done
+
 Semester - Done
+
 AcademicPlan
+
 ConfigManager
  
 ## More Complicated:
 SmartAdvisingTool
+
 ExcelExporter
+
 ExcelParser
+
 DAGGenerator
  
 ## Most Complicated:
 PDFParser
+
 WebCrawler
+
 PrereqChecker
+
 PlanGenerator
