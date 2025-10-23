@@ -1,5 +1,5 @@
 from typing import Dict, Any
-
+from pathlib import Path
 
 class ConfigManager:
     """
@@ -35,7 +35,7 @@ class ConfigManager:
         Returns:
             Any: The setting value
         """
-        pass
+        return self._settings.get(key)
     
     def update_setting(self, key: str, value: Any) -> None:
         """
@@ -45,7 +45,7 @@ class ConfigManager:
             key (str): The setting key to update
             value (Any): The new setting value
         """
-        pass
+        self._settings[key] = value
     
     def validate_paths(self) -> bool:
         """
@@ -64,3 +64,39 @@ class ConfigManager:
             Dict: Dictionary containing input file paths
         """
         pass
+
+    def default_settings(self) -> Dict[str, Any]:
+        """
+        Set default configuration settings. Required minimum settings.
+        """
+        return {"degreeworks_pdf_path": None,
+        "graduate_study_plan_path" : None,
+        "four_year_schedule_path" : None,
+        "output_excel_filename": "recommended_class_plan.xlsx",
+        "output_directory": "outputs/",
+        "course_catalog_url": "https://catalog.columbusstate.edu/course-descriptions/cpsc/",
+        "crawler_timeout": 30,
+        "crawler_max_retries": 3,
+        "cache_prerequisites": None,
+        "prerequiste_cache_path": "prerequisites.cache",
+        "max_semester_hours": 15
+        }
+
+    def check_loaded_settings(self) -> bool:
+        """
+        Check if all required settings are loaded.
+
+        Returns:
+            bool: True if all required settings are present, False otherwise
+        """
+        default_settings = self.default_settings()
+        # TODO: Compare values for same type
+        for key in default_settings.keys():
+            if key not in self._settings:
+                return False
+        return True
+
+    def update_config_file(self):
+        """
+        Update/create configuration file with required minimum settings.
+        """
