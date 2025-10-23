@@ -1,69 +1,62 @@
-from typing import List, Dict
 import requests
+from bs4 import BeautifulSoup
+import pandas as pd
+import re
+import os
 
+class WebCrawler():
+    def __init__(self, catalog_url = "https://catalog.columbusstate.edu/course-descriptions/cpsc/"):
+        self.catalog_url = catalog_url
 
-class WebCrawler:
-    """
-    Web crawler for extracting course information from university websites.
-    """
-    
-    def __init__(self, base_url: str):
-        """
-        Initialize a WebCrawler object.
-        
-        Args:
-            base_url (str): Base URL for the university website
-        """
-        self._base_url = base_url
-        self._session = requests.Session()
-    
-    def crawl_course_prerequisites(self, course_code: str) -> List[str]:
-        """
-        Crawl prerequisites for a specific course.
-        
-        Args:
-            course_code (str): The course code to crawl prerequisites for
-            
-        Returns:
-            List[str]: List of prerequisite course codes
-        """
-        pass
-    
-    def get_course_description(self, course_code: str) -> str:
-        """
-        Get course description from the web.
-        
-        Args:
-            course_code (str): The course code to get description for
-            
-        Returns:
-            str: Course description
-        """
-        pass
-    
-    def batch_crawl_prerequisites(self, courses: List[str]) -> Dict:
-        """
-        Crawl prerequisites for multiple courses in batch.
-        
-        Args:
-            courses (List[str]): List of course codes to crawl
-            
-        Returns:
-            Dict: Dictionary mapping course codes to their prerequisites
-        """
-        pass
-    
-    def validate_connection(self) -> bool:
-        """
-        Validate the web connection.
-        
-        Returns:
-            bool: True if connection is valid, False otherwise
-        """
-        pass
-    
-    def close_session(self) -> None:
-        """
-        Close the web session.
-        """
-        pass
+    def get_course_data(self):
+        """Scrapes CSU CPSC catalog and extracts course details with prerequisites."""
+
+        # Step 1: Fetch HTML
+        print("Connecting to catalog...")
+        page = requests.get(self.catalog_url)
+        page.raise_for_status()
+        soup = BeautifulSoup(page.text, "html.parser")
+
+        extracted = []
+
+        # Step 2: Iterate through all course blocks
+        for block in soup.select("div.courseblock"):
+            header = block.select_one("div.cols.noindent")
+            if not header:
+                continue
+
+            code = header.select_one("span.detail-code strong").get_text(strip=True)
+            title = header.select_one("span.detail-title strong").get_text(strip=True)
+            prereq_list = []
+
+            # Step 3: Search for prerequisite text in the course description
+            for desc in block.select("div.courseblockextra"):
+                text = desc.get_text(" ", strip=True)
+                if "Prerequisite" in text:
+                    # Clean text and extract all course codes like CPSC 1301K, MATH 1113, etc.
+                    cleaned = re.sub(r"[^A-Za-z0-9\s]", " ", text)
+                    matches = re.findall(r"[A-Z]{4}\s?\d{4}[A-Z]?", cleaned)
+                    prereq_list.extend(matches)
+
+            prereq_list = list(dict.fromkeys(prereq_list))  # remove duplicates
+
+            extracted.append({
+                "Course_Code": code,
+                "Course_Title": title,
+                "Prerequisites": ", ".join(prereq_list) if prereq_list else ""
+            })
+
+        return extracted
+
+    def save_to_csv(self, data, output_file="cpsc_prerequisites.csv"):
+        """Stores the parsed data into a CSV file."""
+        df = pd.DataFrame(data, columns=["Course_Code", "Course_Title", "Prerequisites"])
+        if os.path.exists(output_file):
+            os.remove(output_file)
+        df.to_csv(output_file, index=False, encoding="utf-8")
+        print(f" File saved: {output_file} ({len(df)} courses)")
+
+    def quick_test(self):
+        results = self.get_course_data()
+        self.save_to_csv(results)
+
