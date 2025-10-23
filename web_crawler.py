@@ -33,6 +33,12 @@ class WebCrawler():
             for desc in block.select("div.courseblockextra"):
                 text = desc.get_text(" ", strip=True)
                 if "Prerequisite" in text:
+                    text = (text
+                        .replace("\xa0", " ")   # non-breaking space
+                        .replace("Â", " ")      # stray symbol
+                        .replace("¬†", " ")     # alternate non-breaking space
+                        .encode("utf-8", "ignore")
+                        .decode("utf-8"))
                     # Clean text and extract all course codes like CPSC 1301K, MATH 1113, etc.
                     cleaned = re.sub(r"[^A-Za-z0-9\s]", " ", text)
                     matches = re.findall(r"[A-Z]{4}\s?\d{4}[A-Z]?", cleaned)
