@@ -1,0 +1,171 @@
+classDiagram
+    class Course {
+        -course_code: str
+        -course_name: str
+        -credit_hours: int
+        -course_taken: bool
+        -prerequisites: List[str]
+        -semester_offered: List[str]
+        +__init__(code, name, credits)
+        +add_prerequisite(prereq: str)
+        +is_offered_in_semester(semester: str): bool
+        +get_course_info(): dict
+        +is_taken(): bool
+        +__str__(): str
+    }
+
+    class Semester {
+        -semester_name: str
+        -year: int
+        -courses: List[Course]
+        -max_credits: int
+        -current_credits: int
+        +__init__(name, year, max_credits)
+        +add_course(course: Course): bool
+        +remove_course(course: Course)
+        +get_total_credits(): int
+        +is_full(): bool
+        +get_courses(): List[Course]
+    }
+
+    class AcademicPlan {
+        -remaining_courses: List[str]
+        -completed_courses: List[str]
+        -semesters: List[Semester]
+        -total_semesters: int
+        +__init__(remaining_courses: List[str], completed_courses: List[str])
+        +add_semester(semester: Semester)
+        +get_semester(index: int): Semester
+        +validate_plan(): bool
+        +get_plan_summary(): dict
+    }
+
+    class DAGGenerator {
+        -courses: dict[str, Course]
+        -prerequisite_graph: dict
+        -adjacency_list: dict
+        +__init__(courses: dict)
+        +build_prerequisite_dag(): dict
+        +topological_sort(): List[str]
+        +find_course_levels(): dict[str, int]
+        +detect_circular_dependencies(): List[str]
+        +get_courses_without_prerequisites(): List[str]
+    }
+
+    class PDFParser {
+        -file_path: str
+        +__init__(file_path: str)
+        +extract_remaining_courses(): List[str]
+        +parse_degreeworks_pdf(): dict
+        +validate_pdf(): bool
+    }
+
+    class ExcelParser {
+        -file_path: str
+        +__init__(file_path: str)
+        +parse_graduate_study_plan(): dict
+        +parse_four_year_schedule(): dict
+        +get_course_schedule_info(): dict
+        +validate_excel_format(): bool
+    }
+
+    class WebCrawler {
+        -base_url: str
+        -session: requests.Session
+        +__init__(base_url: str)
+        +crawl_course_prerequisites(course_code: str): List[str]
+        +get_course_description(course_code: str): str
+        +batch_crawl_prerequisites(courses: List[str]): dict
+        +validate_connection(): bool
+        +close_session()
+    }
+
+    class PrerequisiteChecker {
+        -course_catalog: dict
+        -web_crawler: WebCrawler
+        +__init__(web_crawler: WebCrawler)
+        +check_prerequisites(course: str, completed: List[str]): bool
+        +get_missing_prerequisites(course: str, completed: List[str]): List[str]
+        +validate_semester_plan(semester: Semester, completed: List[str]): List[str]
+        +update_course_catalog(course_data: dict)
+    }
+
+    class PlanGenerator {
+        -remaining_courses: List[str]
+        -completed_courses: List[str]
+        -course_catalog: dict
+        -dag_generator: DAGGenerator
+        -prerequisite_checker: PrerequisiteChecker
+        -schedule_constraints: dict
+        +__init__(remaining_courses: List[str], completed_courses: List[str])
+        +generate_optimal_plan(): AcademicPlan
+        +prioritize_courses_by_dag(): List[str]
+        +assign_courses_to_semesters(): List[Semester]
+        +optimize_credit_distribution()
+        +handle_prerequisite_conflicts(): bool
+    }
+
+    class ExcelExporter {
+        -output_path: str
+        -template_path: str
+        +__init__(output_path: str)
+        +export_academic_plan(plan: AcademicPlan): bool
+        +create_semester_sheet(semester: Semester, workbook: Workbook)
+        +format_plan_summary(plan: AcademicPlan): dict
+        +add_prerequisite_warnings(issues: List[str])
+        +save_workbook(): str
+    }
+
+    class ConfigManager {
+        -config_file: str
+        -settings: dict
+        +__init__(config_file: str)
+        +load_configuration(): dict
+        +get_setting(key: str): any
+        +update_setting(key: str, value: any)
+        +validate_paths(): bool
+        +get_input_paths(): dict
+    }
+
+    class SmartAdvisingTool {
+        -config_manager: ConfigManager
+        -pdf_parser: PDFParser
+        -excel_parser: ExcelParser
+        -web_crawler: WebCrawler
+        -prerequisite_checker: PrerequisiteChecker
+        -plan_generator: PlanGenerator
+        -excel_exporter: ExcelExporter
+        -dag_generator: DAGGenerator
+        +__init__(config_file: str)
+        +initialize_components()
+        +process_inputs(): bool
+        +generate_course_plan(): str
+        +run(): bool
+        +cleanup_resources()
+    }
+
+    %% Relationships
+    SmartAdvisingTool --> PlanGenerator : instantiates
+    SmartAdvisingTool --> ExcelExporter : instantiates
+    SmartAdvisingTool --> ConfigManager : instantiates
+
+    PDFParser --> Course : instantiates
+
+    ExcelParser --> Course : instantiates
+
+    PlanGenerator --> DAGGenerator : instantiates
+    PlanGenerator --> PrerequisiteChecker : instantiates
+    PlanGenerator --> AcademicPlan : instantiates
+    
+    DAGGenerator --> Course : analyzes
+    DAGGenerator --> PDFParser : instantiates
+    DAGGenerator --> ExcelParser : instantiates
+    
+    AcademicPlan --> Semester : contains
+    
+    Semester --> Course : contains
+    
+    PrerequisiteChecker --> WebCrawler : instantiates
+    
+    ExcelExporter --> AcademicPlan : exports
+    
