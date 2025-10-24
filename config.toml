@@ -1,18 +1,9 @@
-[input_files]
-degreeworks_pdf_path =
-graduate_study_plan_path =
-four_year_schedule_path =
-
-[output_paths]
+degreeworks_pdf_path = "degreeworks.pdf"
+graduate_study_plan_path = "graduate_study_plan.pdf"
+four_year_schedule_path = "four_year_schedule.pdf"
 output_excel_filename = "recommended_class_plan.xlsx"
 output_directory = "outputs/"
-
-[webcrawler]
-course_catalog_url =
-crawler_timeout =
-crawler_max_retries =
-cache_prerequisites =
-prerequiste_cache_path =
-
-[semester info]
+course_catalog_url = "https://catalog.columbusstate.edu/course-descriptions/"
+cache_prerequisites = "cacheprerequisites.txt"
+prerequiste_cache_path = "prerequisites.cache"
 max_semester_hours = 15
