@@ -3,10 +3,12 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import re
 import os
+from typing import List
 
 class WebCrawler():
     def __init__(self, catalog_url = "https://catalog.columbusstate.edu/course-descriptions/cpsc/"):
         self.catalog_url = catalog_url
+        self._data = self.get_course_data()
 
     def get_course_data(self):
         """Scrapes CSU CPSC catalog and extracts course details with prerequisites."""
@@ -66,3 +68,6 @@ class WebCrawler():
         results = self.get_course_data()
         self.save_to_csv(results)
 
+    def crawl_course_prerequisites(self, course_code: str) -> List[str]:
+        course = [x for x in self._data if x.get("Course_Code") == course_code]
+        return course[0].get("Prerequisites").split(", ")

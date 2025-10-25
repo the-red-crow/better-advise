@@ -21,28 +21,20 @@ class PrerequisiteChecker:
     def check_prerequisites(self, course: str, completed: List[str]) -> bool:
         """
         Check if prerequisites are met for a course.
-        
-        Args:
-            course (str): Course code to check
-            completed (List[str]): List of completed course codes
-            
-        Returns:
-            bool: True if prerequisites are met, False otherwise
         """
-        pass
+        prereqs = self._web_crawler.crawl_course_prerequisites(course)
+        remaining = [x for x in prereqs if x not in completed] 
+        if remaining == [''] or not remaining:
+            return True
+        else:
+            return False
     
     def get_missing_prerequisites(self, course: str, completed: List[str]) -> List[str]:
         """
         Get missing prerequisites for a course.
-        
-        Args:
-            course (str): Course code to check
-            completed (List[str]): List of completed course codes
-            
-        Returns:
-            List[str]: List of missing prerequisite course codes
         """
-        pass
+        prereqs = self._web_crawler.crawl_course_prerequisites(course)
+        return [x for x in prereqs if x not in completed]
     
     def validate_semester_plan(self, semester: Semester, completed: List[str]) -> List[str]:
         """

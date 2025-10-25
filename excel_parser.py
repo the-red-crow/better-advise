@@ -1,5 +1,5 @@
 from typing import Dict
-
+import csv
 
 class ExcelParser:
     """
@@ -14,7 +14,7 @@ class ExcelParser:
             file_path (str): Path to the Excel file to parse
         """
         self._file_path = file_path
-    
+
     def parse_graduate_study_plan(self) -> Dict:
         """
         Parse a graduate study plan Excel file.
