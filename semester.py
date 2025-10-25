@@ -5,7 +5,7 @@ class Semester():
             self.name = name
             self.year = year
             self.maxHours = maxHours
-            self.courses = courses
+            self.courses = list(courses)
 
       def getTotalCredits(self):
             hours = 0
@@ -24,3 +24,4 @@ class Semester():
                   self.courses.remove(course)
                   return True
             return False
+
