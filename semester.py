@@ -1,6 +1,7 @@
 from course import Course
+from typing import List
 class Semester():
-      def __init__(self,name:str,year:int, maxHours:int, *courses:Course):
+      def __init__(self,name:str,year:int, maxHours:int, courses:List[Course]):
             self.name = name
             self.year = year
             self.maxHours = maxHours
@@ -23,9 +24,3 @@ class Semester():
                   self.courses.remove(course)
                   return True
             return False
-
-# rcourse1 = Course("Test 1", "A test course", 3)
-# rcourse2 = Course("Test 2", "A test course", 1)
-# rcourse3 = Course("Test 3", "A test course", 4)
-# rSem1 = Semester(15,rcourse1,rcourse2)
-# print(rSem1.getHours())
