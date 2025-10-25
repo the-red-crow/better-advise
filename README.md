@@ -6,7 +6,7 @@ Course - Done
 
 Semester - Done
 
-AcademicPlan
+AcademicPlan - Done
 
 ConfigManager
  
