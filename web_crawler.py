@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import re
 import os
-from typing import List
+from typing import List, Dict
 
 class WebCrawler():
     def __init__(self, catalog_url = "https://catalog.columbusstate.edu/course-descriptions/cpsc/"):
@@ -30,6 +30,7 @@ class WebCrawler():
             code = header.select_one("span.detail-code strong").get_text(strip=True)
             title = header.select_one("span.detail-title strong").get_text(strip=True)
             prereq_list = []
+            list_of_preq = []
 
             # Step 3: Search for prerequisite text in the course description
             for desc in block.select("div.courseblockextra"):
@@ -44,6 +45,7 @@ class WebCrawler():
                     # Clean text and extract all course codes like CPSC 1301K, MATH 1113, etc.
                     cleaned = re.sub(r"[^A-Za-z0-9\s]", " ", text)
                     matches = re.findall(r"[A-Z]{4}\s?\d{4}[A-Z]?", cleaned)
+                    list_of_preq = self.preq_list(text)
                     prereq_list.extend(matches)
 
             prereq_list = list(dict.fromkeys(prereq_list))  # remove duplicates
@@ -51,7 +53,8 @@ class WebCrawler():
             extracted.append({
                 "Course_Code": code,
                 "Course_Title": title,
-                "Prerequisites": ", ".join(prereq_list) if prereq_list else ""
+                "Prerequisites": ", ".join(prereq_list) if prereq_list else "",
+                "preq_list": list_of_preq
             })
 
         return extracted
@@ -71,3 +74,32 @@ class WebCrawler():
     def crawl_course_prerequisites(self, course_code: str) -> List[str]:
         course = [x for x in self._data if x.get("Course_Code") == course_code]
         return course[0].get("Prerequisites").split(", ")
+
+    def preq_list(self, text:str) -> List[(str)]:
+        pattern = r'\b(?:[A-Z]{4}\s+\d{4}[A-Z]?|or|and)\b'
+        matches = re.findall(pattern, text)
+
+        return_list = []
+        buffer = []
+        for word in matches:
+            if word == "and" and buffer:
+                return_list.append(buffer)
+                buffer = []
+            #     Left the "or" check for debugging
+            elif word == "or" and buffer:
+                continue
+            else:
+                buffer.append(word)
+        if buffer:
+            return_list.append(buffer)
+        return return_list
+
+    def get_course_prerequisites(self) -> Dict[str, str]:
+        return_dict = {}
+        for course in self._data:
+            course_code = course.get("Course_Code")
+            prereq_list = course.get("preq_list")
+
+            return_dict[course_code] = prereq_list
+
+        return return_dict
