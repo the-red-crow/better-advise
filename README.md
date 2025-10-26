@@ -13,18 +13,18 @@ ConfigManager - Done
 ## More Complicated:
 SmartAdvisingTool
 
-ExcelExporter
+ExcelExporter - Done
 
 ExcelParser
 
-DAGGenerator
+DAGGenerator - Done
  
 ## Most Complicated:
 PDFParser - Done - Output is List[str] of courses still needed to be taken. We can iterate over it and set any course
 objects to false for taken before performing semester populating.
 
-WebCrawler-Done
+WebCrawler - Done
 
-PrereqChecker
+PrereqChecker - Mostly done
 
 PlanGenerator
