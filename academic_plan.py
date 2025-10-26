@@ -1,6 +1,8 @@
 from typing import List, Dict
 from semester import Semester
 from course import Course
+from web_crawler import WebCrawler
+from prerequisite_checker import PrerequisiteChecker
 
 
 class AcademicPlan:
@@ -36,7 +38,9 @@ class AcademicPlan:
         """
         errors = []
         scheduled_codes = []
-
+        prereq_errors = []
+        wc = WebCrawler()
+        pc = PrerequisiteChecker(wc)
         for sem in self._semesters:
             # check credit hours
             if sem.getTotalCredits() > sem.maxHours:
@@ -48,6 +52,8 @@ class AcademicPlan:
             for c in sem.courses:
                 scheduled_codes.append(c.code)
 
+            prereq_errors += pc.validate_semester_plan(sem)
+            
         # check duplicates
         if len(scheduled_codes) != len(set(scheduled_codes)):
             errors.append("Duplicate course(s) found across semesters")
@@ -60,6 +66,9 @@ class AcademicPlan:
         overlap = self._completed_courses.intersection(set(scheduled_codes))
         if overlap:
             errors.append(f"Completed courses scheduled again: {list(overlap)}")
+        
+        if prereq_errors:
+            errors.append(f"Prerequisites need to be taken before some courses.")
 
         self._last_errors = errors
         return len(errors) == 0

@@ -22,8 +22,8 @@ class PrerequisiteChecker:
         """
         Check if prerequisites are met for a course.
         """
-        prereqs = self._web_crawler.crawl_course_prerequisites(course)
-        remaining = [x for x in prereqs if x not in completed] 
+        prereqs = self._web_crawler.get_course_prerequisites()
+        remaining = [x for x in prereqs.get(course) if not any(y in completed for y in x)]
         if remaining == [''] or not remaining:
             return True
         else:
@@ -33,8 +33,8 @@ class PrerequisiteChecker:
         """
         Get missing prerequisites for a course.
         """
-        prereqs = self._web_crawler.crawl_course_prerequisites(course)
-        return [x for x in prereqs if x not in completed]
+        prereqs = self._web_crawler.get_course_prerequisites()
+        return [x for x in prereqs.get(course) if not any(y in completed for y in x)]
     
     def validate_semester_plan(self, semester: Semester, completed: List[str]) -> List[str]:
         """
@@ -47,17 +47,13 @@ class PrerequisiteChecker:
         Returns:
             List[str]: List of prerequisite issues found
         """
-        remaining = []
-        for course in semester.courses:
-            prereqleft = [x for x in course.prereq if x not in completed]
-            remaining += prereqleft
-        if remaining:
-            return remaining
-        else:
+        if all(self.check_prerequisites(course.code, completed) for course in semester.courses):
             return []
+        else:
+            return list(set(sum(self.get_missing_prerequisites(course.code, completed) for course in semester.courses)))
     
     def update_course_catalog(self, course_data: Dict) -> None:
-        """
+        """ Obsolete, covered by webcrawler
         Update the course catalog with new course data.
         
         Args:
