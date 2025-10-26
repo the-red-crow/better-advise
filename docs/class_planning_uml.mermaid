@@ -56,9 +56,12 @@ classDiagram
         -file_path: str
         +__init__(file_path: str)
         +extract_remaining_courses(): List[str]
-        +parse_degreeworks_pdf(): dict
-        +is_valid_pdf()
-        +validate_pdf(): bool
+        +parse_degreeworks_pdf(): List[str]
+        +extract_text(): str
+        +is_valid_pdf(): bool
+        +validate_pdf()
+        +clean_text(text: str): str
+        +merge_course_requirements(lines: List[str]): List[str]
     }
 
     class ExcelParser {

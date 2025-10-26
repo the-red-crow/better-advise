@@ -8,7 +8,7 @@ Semester - Done
 
 AcademicPlan - Done
 
-ConfigManager
+ConfigManager - Done
  
 ## More Complicated:
 SmartAdvisingTool
@@ -20,7 +20,8 @@ ExcelParser
 DAGGenerator
  
 ## Most Complicated:
-PDFParser
+PDFParser - Done - Output is List[str] of courses still needed to be taken. We can iterate over it and set any course
+objects to false for taken before performing semester populating.
 
 WebCrawler-Done
 
