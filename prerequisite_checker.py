@@ -47,7 +47,14 @@ class PrerequisiteChecker:
         Returns:
             List[str]: List of prerequisite issues found
         """
-        pass
+        remaining = []
+        for course in semester.courses:
+            prereqleft = [x for x in course.prereq if x not in completed]
+            remaining += prereqleft
+        if remaining:
+            return remaining
+        else:
+            return []
     
     def update_course_catalog(self, course_data: Dict) -> None:
         """
