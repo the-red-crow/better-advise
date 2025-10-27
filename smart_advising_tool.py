@@ -1,3 +1,4 @@
+from academic_plan import AcademicPlan
 from config_manager import ConfigManager
 from pdf_parser import PDFParser
 from excel_parser import ExcelParser
@@ -52,16 +53,16 @@ class SmartAdvisingTool:
         Returns:
             bool: True if processing successful, False otherwise
         """
-        self._plan_generator.generate_optimal_plan()
+
     
-    def generate_course_plan(self) -> str:
+    def generate_course_plan(self) -> AcademicPlan:
         """
         Generate the course plan and return the output path.
         
         Returns:
             str: Path to the generated course plan file
         """
-        pass
+        return self._plan_generator.generate_optimal_plan()
     
     def run(self) -> bool:
         """
@@ -70,7 +71,8 @@ class SmartAdvisingTool:
         Returns:
             bool: True if successful, False otherwise
         """
-        self.process_inputs()
+        plan = self.generate_course_plan()
+        self._excel_exporter.export_academic_plan(plan)
     
     def cleanup_resources(self) -> None:
         """

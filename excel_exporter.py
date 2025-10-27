@@ -3,6 +3,7 @@ from academic_plan import AcademicPlan
 from semester import Semester
 from openpyxl import Workbook
 import traceback
+from pathlib import Path
 
 class ExcelExporter:
     """
@@ -16,26 +17,26 @@ class ExcelExporter:
         Args:
             output_path (str): Path where the Excel file will be saved
         """
-        self._output_path = output_path
+        self._output_path = Path(output_path)
         self._template_path = ""
     
     def create_semester_sheet(self, semester: Semester, workbook: Workbook) -> None:
         """ Create the worksheet in the workbook for a given semester """
         new_sheet = workbook.create_sheet(str(semester.name) + " " + str(semester.year))
         new_sheet.cell(row=1,column=1,value="Course Code")
-        new_sheet.cell(row=1,column=2,value="Course Name")
-        new_sheet.cell(row=1,column=3,value="Credit Hours")
-        new_sheet.cell(row=1,column=4,value="Taken Yet?")
-        new_sheet.cell(row=1,column=5,value="Grade")
-        new_sheet.cell(row=1,column=6,value="Course Description")
+        # new_sheet.cell(row=1,column=2,value="Course Name")
+        new_sheet.cell(row=1,column=2,value="Credit Hours")
+        # new_sheet.cell(row=1,column=4,value="Taken Yet?")
+        # new_sheet.cell(row=1,column=5,value="Grade")
+        # new_sheet.cell(row=1,column=6,value="Course Description")
         iter = 2
         for course in semester.courses:
             new_sheet.cell(row=iter,column=1,value=course.code)
-            new_sheet.cell(row=iter,column=2,value=course.name)
-            new_sheet.cell(row=iter,column=3,value=course.getHours())
-            new_sheet.cell(row=iter,column=4,value="Yes" if course.isTaken() else "No")
-            new_sheet.cell(row=iter,column=5,value=course.getGrade())
-            new_sheet.cell(row=iter,column=6,value=course.desc)
+            # new_sheet.cell(row=iter,column=2,value=course.name)
+            new_sheet.cell(row=iter,column=2,value=course.getHours())
+            # new_sheet.cell(row=iter,column=4,value="Yes" if course.isTaken() else "No")
+            # new_sheet.cell(row=iter,column=5,value=course.getGrade())
+            # new_sheet.cell(row=iter,column=6,value=course.desc)
             iter += 1
     
     def export_academic_plan(self, plan: AcademicPlan) -> bool:

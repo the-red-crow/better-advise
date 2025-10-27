@@ -155,8 +155,6 @@ classDiagram
     SmartAdvisingTool --> ExcelExporter : instantiates
     SmartAdvisingTool --> ConfigManager : instantiates
 
-    PDFParser --> Course : instantiates
-
     ExcelParser --> Course : instantiates
 
     PlanGenerator --> DAGGenerator : instantiates
@@ -165,7 +163,7 @@ classDiagram
     
     DAGGenerator --> Course : analyzes
     DAGGenerator --> PDFParser : instantiates
-    DAGGenerator --> ExcelParser : instantiates
+    PlanGenerator --> ExcelParser : instantiates
     
     AcademicPlan --> Semester : contains
     
