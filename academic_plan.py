@@ -52,7 +52,7 @@ class AcademicPlan:
             for c in sem.courses:
                 scheduled_codes.append(c.code)
 
-            prereq_errors += pc.validate_semester_plan(sem)
+            prereq_errors += pc.validate_semester_plan(sem, self._completed_courses)
             
         # check duplicates
         if len(scheduled_codes) != len(set(scheduled_codes)):

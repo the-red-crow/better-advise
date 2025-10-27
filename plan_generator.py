@@ -82,7 +82,7 @@ class PlanGenerator:
         plan = AcademicPlan([], list(self._completed_courses))
         for semester in semesters:
             plan.add_semester(semester)
-
+        test = plan.get_plan_summary()
         return plan
 
 

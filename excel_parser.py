@@ -62,7 +62,7 @@ class ExcelParser:
                     available_semster = []
                     for i, semester in enumerate(row[2:], start=2):
                         if semester:
-                            match = re.match(r'D|N|O', semester)
+                            match = re.search(r'D|N|O', semester)
                             if match:
                                 available_semster.append(headers[i])
                     courses[row[0]] = available_semster
