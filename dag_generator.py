@@ -89,24 +89,3 @@ class DAGGenerator:
 
     def set_courses(self, courses: Dict[str, Course]):
         self._courses = courses
-
-if __name__ == "__main__":
-    courses = {}
-    """
-    CPSC 6119
-    CPSC 6127
-    CYBR 6126
-    CPSC 6175
-    CPSC 6109
-    CPSC 6185
-    CPSC 6177
-    CPSC 6179
-    """
-
-    first_course = Course("CPSC6119", "TESt", 3, ())
-    second_course = Course("CPSC1002", "TESt", 3, ())
-    third_course = Course("CPSC1003", "TESt", 3, ())
-    fourth_course = Course("CPSC1004", "TESt", 3, "CPSC1000")
-    fifth_course = Course("CPSC1005", "TESt", 3, ("CPSC"))
-    sixth_course = Course("CPSC1006", "TESt", 3, ())
-    dag = DAGGenerator()

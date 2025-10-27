@@ -34,8 +34,8 @@ class PrerequisiteChecker:
         Get missing prerequisites for a course.
         """
         prereqs = self._web_crawler.get_course_prerequisites()
-        # return [x for x in prereqs.get(course) if not any(y in completed for y in x)]
-        return prereqs.get(course, [])
+        return [x for x in prereqs.get(course) if not any(y in completed for y in x)]
+        # return prereqs.get(course, [])
     
     def validate_semester_plan(self, semester: Semester, completed: List[str]) -> List[str]:
         """

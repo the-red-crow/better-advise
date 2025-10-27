@@ -51,7 +51,7 @@ class PlanGenerator:
 
         while self._remaining_courses:
             semester_name = semester_names[current_semester_index % 3]
-            semester = Semester(semester_name, current_year, maxHours=15, courses=[])
+            semester = Semester(semester_name, current_year, maxHours=9, courses=[])
 
             # Build the semester code to check availability (e.g., "FA25", "SP25")
             semester_code = semester_name + str(current_year)
