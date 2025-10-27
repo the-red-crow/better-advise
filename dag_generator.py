@@ -7,7 +7,7 @@ class DAGGenerator:
     Generates and manages Directed Acyclic Graph for course prerequisites.
     """
     
-    def __init__(self, courses: Dict[str, Course]):
+    def __init__(self, courses: Dict[str, Course] = {}):
         """
         Initialize a DAGGenerator object.
         
@@ -17,7 +17,6 @@ class DAGGenerator:
         self._courses = courses
         self._prerequisite_graph = {}
         self._adjacency_list = {}
-        self.build_prerequisite_dag()
     
     def build_prerequisite_dag(self) -> Dict:
         for course in self._courses.values():
@@ -87,3 +86,27 @@ class DAGGenerator:
             if not course.prerequisites:
                 no_prereq_courses.append(course_code)
         return no_prereq_courses
+
+    def set_courses(self, courses: Dict[str, Course]):
+        self._courses = courses
+
+if __name__ == "__main__":
+    courses = {}
+    """
+    CPSC 6119
+    CPSC 6127
+    CYBR 6126
+    CPSC 6175
+    CPSC 6109
+    CPSC 6185
+    CPSC 6177
+    CPSC 6179
+    """
+
+    first_course = Course("CPSC6119", "TESt", 3, ())
+    second_course = Course("CPSC1002", "TESt", 3, ())
+    third_course = Course("CPSC1003", "TESt", 3, ())
+    fourth_course = Course("CPSC1004", "TESt", 3, "CPSC1000")
+    fifth_course = Course("CPSC1005", "TESt", 3, ("CPSC"))
+    sixth_course = Course("CPSC1006", "TESt", 3, ())
+    dag = DAGGenerator()

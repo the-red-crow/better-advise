@@ -22,7 +22,8 @@ class SmartAdvisingTool:
         """
         self._config_manager = None
         self._pdf_parser = None
-        self._excel_parser = None
+        self._four_year_parser = None
+        self._graduate_parser = None
         self._web_crawler = None
         self._prerequisite_checker = None
         self._plan_generator = None
@@ -33,8 +34,17 @@ class SmartAdvisingTool:
         """
         Initialize all components of the advising tool.
         """
-        pass
-    
+        self._config_manager = ConfigManager()
+        self._pdf_parser = PDFParser(self._config_manager.get_setting("degreeworks_pdf_path"))
+        self._four_year_parser = ExcelParser(self._config_manager.get_setting("four_year_schedule_path"))
+        self._graduate_parser = ExcelParser(self._config_manager.get_setting("degreeworks_excel_path"))
+        self._web_crawler = WebCrawler()
+        self._prerequisite_checker = PrerequisiteChecker(self._web_crawler)
+        self._excel_exporter = ExcelExporter(self._config_manager.get_setting("output_directory") + self._config_manager.get_setting("output_excel_file"))
+        self._dag_generator = DAGGenerator()
+        self._plan_generator = PlanGenerator(self._dag_generator, self._graduate_parser, self._for_year_parser, self._prerequisite_checker)
+
+
     def process_inputs(self) -> bool:
         """
         Process input files and extract course information.

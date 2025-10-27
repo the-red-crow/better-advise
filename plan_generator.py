@@ -28,7 +28,6 @@ class PlanGenerator:
         self._prerequisite_checker = prerequisite_checker
         self._graduate_parser = graduate_parser
         self._four_year_parser = four_year_parser
-        self._schedule_constraints = {}
 
     def generate_optimal_plan(self) -> AcademicPlan:
         """
@@ -40,42 +39,43 @@ class PlanGenerator:
         semesters = []
         self.populate_remaining_courses("Software Dev")
 
-        for course in
+        course_schedule = self._four_year_parser.parse_four_year_schedule()
 
-        topological_sort = self._dag.topological_sort()
 
-        current_semester_index = 0
-        semester_names = ["Fall", "Spring", "Summer"]
-        current_year = 1
+        courses = {}
 
-        while self._remaining_courses:
-            semester_name = semester_names[current_semester_index % 3]
-            semester = Semester(semester_name, current_year, maxHours=15, courses=[])
-
-            # Try to add courses to this semester based on topological order
-            available_courses = [
-                course for course in topological_sort
-                if course in self._remaining_courses
-                   and self._prerequisite_checker.check_prerequisites(course, self._completed_courses)
-            ]
-
-            for course in available_courses:
-                if semester.getTotalCredits() + self._get_course_credits(course) <= semester.maxHours:
-                    course_obj = self._create_course_from_code(course)
-                    semester.addCourse(course_obj)
-                    self._remaining_courses.remove(course)
-                    self._completed_courses.add(course)
-
-            if semester.courses:  # Only add non-empty semesters
-                semesters.append(semester)
-
-            current_semester_index += 1
-            if current_semester_index % 3 == 0:
-                current_year += 1
-
-        plan = AcademicPlan([], list(self._completed_courses))
-        for semester in semesters:
-            plan.add_semester(semester)
+        # current_semester_index = 0
+        # semester_names = ["Fall", "Spring", "Summer"]
+        # current_year = 1
+        #
+        # while self._remaining_courses:
+        #     semester_name = semester_names[current_semester_index % 3]
+        #     semester = Semester(semester_name, current_year, maxHours=15, courses=[])
+        #
+        #     # Try to add courses to this semester based on topological order
+        #     available_courses = [
+        #         course for course in topological_sort
+        #         if course in self._remaining_courses
+        #            and self._prerequisite_checker.check_prerequisites(course, self._completed_courses)
+        #     ]
+        #
+        #     for course in available_courses:
+        #         if semester.getTotalCredits() + self._get_course_credits(course) <= semester.maxHours:
+        #             course_obj = self._create_course_from_code(course)
+        #             semester.addCourse(course_obj)
+        #             self._remaining_courses.remove(course)
+        #             self._completed_courses.add(course)
+        #
+        #     if semester.courses:  # Only add non-empty semesters
+        #         semesters.append(semester)
+        #
+        #     current_semester_index += 1
+        #     if current_semester_index % 3 == 0:
+        #         current_year += 1
+        #
+        # plan = AcademicPlan([], list(self._completed_courses))
+        # for semester in semesters:
+        #     plan.add_semester(semester)
 
         return plan
 
@@ -183,6 +183,9 @@ class PlanGenerator:
             self._course_catalog[course_code] = Course(course_code, course_code, 3)
         return self._course_catalog[course_code]
 
+    def generate_courses(self, courses: List[Course], schedule: Dict[str, [str]], prerequistes) -> Dict[Course]:
+        for course in courses:
+            new_course = Course()
 
 test = PlanGenerator(DAGGenerator({}), ExcelParser("input/Graduate Study Plans -revised.xlsx"), ExcelParser("input/4-year schedule.xlsx"), PrerequisiteChecker(WebCrawler()))
 test.generate_optimal_plan()
