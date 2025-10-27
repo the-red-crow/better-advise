@@ -15,7 +15,7 @@ SmartAdvisingTool
 
 ExcelExporter - Done
 
-ExcelParser
+ExcelParser - Done
 
 DAGGenerator - Done
  
