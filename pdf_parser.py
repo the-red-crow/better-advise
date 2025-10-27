@@ -44,7 +44,7 @@ class PDFParser:
                         course_prefix = word
                     # Matches 4 digits or 4 digits Course number with capital 5th character
                     elif re.match(r'^[0-9]{4}[A-Z]?', word):
-                        remaining_courses.append(course_prefix + word)
+                        remaining_courses.append(course_prefix + " " + word)
 
         return remaining_courses
     
@@ -168,8 +168,3 @@ class PDFParser:
         From personal degreeworks with CS graduate major. Contains only electives and Exit exam
         """
         return ['CPSC6985', 'CPSC6986', 'CPSC6127', 'CPSC6698', 'CPSC6103', 'CPSC6105', 'CPSC6106', 'CYBR6126', 'CPSC6000']
-
-
-test = PDFParser("input/4cscourses.pdf")
-output = test.parse_degreeworks_pdf()
-print(output)

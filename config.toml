@@ -7,3 +7,4 @@ course_catalog_url = "https://catalog.columbusstate.edu/course-descriptions/"
 cache_prerequisites = "cacheprerequisites.txt"
 prerequiste_cache_path = "prerequisites.cache"
 max_semester_hours = 15
+#degreeworks_pdf_path = "input/4cscourses.pdf"

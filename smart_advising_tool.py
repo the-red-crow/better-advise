@@ -37,12 +37,12 @@ class SmartAdvisingTool:
         self._config_manager = ConfigManager()
         self._pdf_parser = PDFParser(self._config_manager.get_setting("degreeworks_pdf_path"))
         self._four_year_parser = ExcelParser(self._config_manager.get_setting("four_year_schedule_path"))
-        self._graduate_parser = ExcelParser(self._config_manager.get_setting("degreeworks_excel_path"))
+        self._graduate_parser = ExcelParser(self._config_manager.get_setting("graduate_study_plan_path"))
         self._web_crawler = WebCrawler()
         self._prerequisite_checker = PrerequisiteChecker(self._web_crawler)
-        self._excel_exporter = ExcelExporter(self._config_manager.get_setting("output_directory") + self._config_manager.get_setting("output_excel_file"))
+        self._excel_exporter = ExcelExporter(self._config_manager.get_setting("output_directory") + self._config_manager.get_setting("output_excel_filename"))
         self._dag_generator = DAGGenerator()
-        self._plan_generator = PlanGenerator(self._dag_generator, self._graduate_parser, self._for_year_parser, self._prerequisite_checker)
+        self._plan_generator = PlanGenerator(self._dag_generator, self._graduate_parser, self._four_year_parser, self._prerequisite_checker, self._pdf_parser)
 
 
     def process_inputs(self) -> bool:
@@ -52,7 +52,7 @@ class SmartAdvisingTool:
         Returns:
             bool: True if processing successful, False otherwise
         """
-        pass
+        self._plan_generator.generate_optimal_plan()
     
     def generate_course_plan(self) -> str:
         """
@@ -70,10 +70,16 @@ class SmartAdvisingTool:
         Returns:
             bool: True if successful, False otherwise
         """
-        pass
+        self.process_inputs()
     
     def cleanup_resources(self) -> None:
         """
         Clean up resources and close connections.
         """
         pass
+
+if __name__ == "__main__":
+    tool = SmartAdvisingTool(config_file="config.toml")
+    tool.initialize_components()
+    tool.run()
+    tool.cleanup_resources()
