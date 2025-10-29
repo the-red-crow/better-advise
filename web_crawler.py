@@ -6,17 +6,16 @@ import os
 from typing import List, Dict
 
 class WebCrawler():
-    courses = ["cpsc", "cybr"]
-
-    def __init__(self, catalog_url = "https://catalog.columbusstate.edu/course-descriptions/"):
+    def __init__(self, catalog_url = "https://catalog.columbusstate.edu/course-descriptions/", courses = ["cpsc", "cybr"]):
         self.catalog_url = catalog_url
+        self._courses = courses
         self._data = self.get_course_data()
+
 
     def get_course_data(self):
         """Scrapes CSU CPSC catalog and extracts course details with prerequisites."""
         extracted = []
-        global courses
-        for code in self.courses:
+        for code in self._courses:
             # Step 1: Fetch HTML
             print("Connecting to catalog...")
             page = requests.get(self.catalog_url + code + "/")
@@ -76,6 +75,8 @@ class WebCrawler():
 
     def crawl_course_prerequisites(self, course_code: str) -> List[str]:
         course = [x for x in self._data if x.get("Course_Code") == course_code]
+        if not course:
+            return []
         return course[0].get("Prerequisites").split(", ")
 
     def preq_list(self, text:str) -> List[(str)]:
