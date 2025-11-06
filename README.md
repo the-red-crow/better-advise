@@ -11,7 +11,7 @@ AcademicPlan - Done
 ConfigManager - Done
  
 ## More Complicated:
-SmartAdvisingTool
+SmartAdvisingTool - Done
 
 ExcelExporter - Done
 
