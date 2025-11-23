@@ -1,7 +1,11 @@
 import os
 from typing import Dict, Any
 from pathlib import Path
-import tomli
+import sys
+if sys.version_info >= (3, 11):
+    import tomllib as tomli
+else:
+    import tomli
 
 class ConfigManager:
     """
@@ -82,9 +86,9 @@ class ConfigManager:
         Set default configuration settings. Required minimum settings.
         """
         #  TODO: Need to finalize the settings
-        return {"degree_pdf_path": "degreeworks.pdf",
-        "graduate_study_plan_path" : "graduate_study_plan.pdf",
-        "four_year_schedule_path" : "four_year_schedule.pdf",
+        return {"degree_pdf_path": "input/degreeworks.pdf",
+        "graduate_study_plan_path" : "input/graduate_study_plan.xlsx",
+        "four_year_schedule_path" : "input/four_year_schedule.xlsx",
         "output_excel_filename": "recommended_class_plan.xlsx",
         "output_directory": "outputs/",
         "course_catalog_url": "https://catalog.columbusstate.edu/course-descriptions/",

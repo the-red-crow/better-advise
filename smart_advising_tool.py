@@ -237,6 +237,7 @@ class SmartAdvisingTool:
 
     def generate_course_plan(self) -> str:
         print("[SmartAdvisingTool] Generating course plan...")
+
         if not self._excel_exporter or not getattr(self._excel_exporter, "_output_path", None):
             raise RuntimeError("Output path not initialized. Check initialize_components().")
 
@@ -263,7 +264,6 @@ class SmartAdvisingTool:
         else:
             print("[SmartAdvisingTool] Falling back to naive plan generator.")
             plan = self._build_naive_plan()
-
         if not self._excel_exporter.export_academic_plan(plan):
             raise RuntimeError("Failed to export academic plan to Excel.")
         print(f"[SmartAdvisingTool] Plan exported: {self._excel_exporter._output_path}")
@@ -279,11 +279,12 @@ class SmartAdvisingTool:
             if not self.process_inputs():
                 print("[SmartAdvisingTool] Input processing failed.")
                 return False
-
+            
             self.generate_course_plan()
             print("[SmartAdvisingTool] Run finished successfully.")
             return True
         except Exception as e:
+            print(repr(e))
             print("[SmartAdvisingTool] Run failed:", e)
             return False
         finally:
