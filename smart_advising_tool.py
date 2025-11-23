@@ -52,6 +52,7 @@ class SmartAdvisingTool:
         self._pdf_parser = PDFParser(paths.get("degree_pdf_path"))
         self._excel_parser_gsp = ExcelParser(paths.get("graduate_study_plan_path"))
         self._excel_parser_4yr = ExcelParser(paths.get("four_year_schedule_path"))
+       
 
         # Optional: Web crawler + prereq checker (don’t fail run if network/HTML changes)
         catalog_url = self._config_manager.get_setting("course_catalog_url") or "https://catalog.columbusstate.edu/course-descriptions/"
@@ -256,7 +257,6 @@ class SmartAdvisingTool:
                 prerequisite_checker=self._prerequisite_checker,
                 degreeworks_parser=self._pdf_parser,
                 max_hours_per_term=self._config_manager.get_setting("max_semester_hours") or 9,
-                hours_per_course=3,
                 start_year_two_digit=25,
             )
             plan = gen.generate_optimal_plan()
@@ -296,3 +296,72 @@ class SmartAdvisingTool:
         self._excel_parser_4yr = None
         self._excel_exporter = None
         print("[SmartAdvisingTool] Cleanup complete.")
+
+if __name__ == "__main__":
+    SAT = SmartAdvisingTool()
+    try:
+        while True:
+            print("Welcome to Better Advise!\nPlease select from the following menu.")
+            print("1.\tRun")
+            print("2.\tConfig")
+            print("0.\tQuit")
+            s = input(">> ").replace(" ", "")
+            if(s=="1"):
+                SAT.run()
+            elif(s=="2"):
+                if SAT._config_manager == None:
+                    SAT._config_manager = ConfigManager(SAT._config_file)
+                while True:
+                    print("Pick a config item to change.")
+                    print("1. degree_pdf_path")# = "input/allcscourses.pdf"
+                    print("2. graduate_study_plan_path")# = "input/Graduate Study Plans -revised.xlsx"
+                    print("3. four_year_schedule_path")# = "input/4-year schedule.xlsx"
+                    print("4. output_excel_filename")# = "recommended_class_plan.xlsx"
+                    print("5. output_directory")# = "outputs/"
+                    print("6. course_catalog_url")# = "https://catalog.columbusstate.edu/course-descriptions/"
+                    print("7. cache_prerequisites")# = "cacheprerequisites.txt"
+                    print("8. prerequiste_cache_path")# = "prerequisites.cache"
+                    print("9. max_semester_hours")# = 15"
+                    print("0. Back and Save")
+                    print("A. Back without Saving")
+                    j = input("config>> ").replace(" ", "")
+                    if(j == "1"):
+                        print("Current value:", SAT._config_manager.get_setting("degree_pdf_path"))
+                        SAT._config_manager.update_setting("degree_pdf_path", input("New value: "))
+                    elif(j == "2"):
+                        print("Current value:", SAT._config_manager.get_setting("graduate_study_plan_path"))
+                        SAT._config_manager.update_setting("graduate_study_plan_path", input("New value: "))
+                    elif(j == "3"):
+                        print("Current value:", SAT._config_manager.get_setting("four_year_schedule_path"))
+                        SAT._config_manager.update_setting("four_year_schedule_path", input("New value: "))
+                    elif(j == "4"):
+                        print("Current value:", SAT._config_manager.get_setting("output_excel_filename"))
+                        SAT._config_manager.update_setting("output_excel_filename", input("New value: "))
+                    elif(j == "5"):
+                        print("Current value:", SAT._config_manager.get_setting("output_directory"))
+                        SAT._config_manager.update_setting("output_directory", input("New value: "))
+                    elif(j == "6"):
+                        print("Current value:", SAT._config_manager.get_setting("course_catalog_url"))
+                        SAT._config_manager.update_setting("course_catalog_url", input("New value: "))
+                    elif(j == "7"):
+                        print("Current value:", SAT._config_manager.get_setting("cache_prerequisites"))
+                        SAT._config_manager.update_setting("cache_prerequisites", input("New value: "))
+                    elif(j == "8"):
+                        print("Current value:", SAT._config_manager.get_setting("prerequiste_cache_path"))
+                        SAT._config_manager.update_setting("prerequiste_cache_path", input("New value: "))
+                    elif(j == "9"):
+                        print("Current value:", SAT._config_manager.get_setting("max_semester_hours"))
+                        SAT._config_manager.update_setting("max_semester_hours", int(input("New value: ")))
+                    elif(j=="0"):
+                        SAT._config_manager.update_config_file()
+                        break
+                    elif(j.upper()=="A"):
+                        break
+                    else:
+                        print("Invalid Input!")
+            elif(s=="0"):
+                break
+            else:
+                print("Invalid Input!")
+    except Exception as e:
+        print("Better-Advise failed:", e)

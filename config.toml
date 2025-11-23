@@ -1,4 +1,4 @@
-degreeworks_pdf_path = "input/allcscourses.pdf"
+degree_pdf_path = "input/allcscourses.pdf"
 graduate_study_plan_path = "input/Graduate Study Plans -revised.xlsx"
 four_year_schedule_path = "input/4-year schedule.xlsx"
 output_excel_filename = "recommended_class_plan.xlsx"

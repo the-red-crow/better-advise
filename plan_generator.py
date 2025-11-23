@@ -14,18 +14,20 @@ class PlanGenerator:
     Generates optimal academic plans based on course requirements and constraints.
     """
     
-    def __init__(self, dag: DAGGenerator, graduate_parser: ExcelParser, four_year_parser: ExcelParser, prerequisite_checker: PrerequisiteChecker, degreeworks_parser: PDFParser) -> None:
+    def __init__(self, dag: DAGGenerator, graduate_parser: ExcelParser, four_year_parser: ExcelParser, prerequisite_checker: PrerequisiteChecker, degreeworks_parser: PDFParser, max_hours_per_term: int,start_year_two_digit:int) -> None:
         """
         Initialize a PlanGenerator object.
         """
         self._remaining_courses = []
         self._completed_courses = []
         self._course_catalog = {}
+        self._max_hours_per_term = max_hours_per_term
         self._dag = dag
         self._prerequisite_checker = prerequisite_checker
         self._graduate_parser = graduate_parser
         self._four_year_parser = four_year_parser
         self._degreeworks_parser = degreeworks_parser
+        self._start_year_two_digit = start_year_two_digit
 
     def generate_optimal_plan(self) -> AcademicPlan:
         """
@@ -47,11 +49,11 @@ class PlanGenerator:
 
         current_semester_index = 0
         semester_names = ["FA", "SP", "SU"]
-        current_year = 25
+        current_year = self._start_year_two_digit
 
         while self._remaining_courses:
             semester_name = semester_names[current_semester_index % 3]
-            semester = Semester(semester_name, current_year, maxHours=9, courses=[])
+            semester = Semester(semester_name, current_year, maxHours=self._max_hours_per_term, courses=[])
 
             # Build the semester code to check availability (e.g., "FA25", "SP25")
             semester_code = semester_name + str(current_year)

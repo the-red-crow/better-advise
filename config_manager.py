@@ -82,7 +82,7 @@ class ConfigManager:
         Set default configuration settings. Required minimum settings.
         """
         #  TODO: Need to finalize the settings
-        return {"degreeworks_pdf_path": "degreeworks.pdf",
+        return {"degree_pdf_path": "degreeworks.pdf",
         "graduate_study_plan_path" : "graduate_study_plan.pdf",
         "four_year_schedule_path" : "four_year_schedule.pdf",
         "output_excel_filename": "recommended_class_plan.xlsx",
