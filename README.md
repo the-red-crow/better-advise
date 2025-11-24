@@ -1,7 +1,16 @@
-# Better Advise
+# Smart Planning Tool
 
 An intelligent academic advising tool that automatically generates optimized course schedules for university students by analyzing degree requirements, prerequisites, and course availability.
 
+## Contributors
+Team 3 – CPSC 6177
+
+- Syed Osama Ali
+- Dheeraj Kolla
+- John Morales 
+- Jitha Priya 
+- Astrea Rojas 
+  
 ## Purpose
 
 **Problem**: Academic advising—especially properly planning courses across semesters to ensure students graduate on time—requires significant time and effort from both students and faculty. Students often make enrollment mistakes, such as:
@@ -9,14 +18,14 @@ An intelligent academic advising tool that automatically generates optimized cou
 - Not accounting for course availability across semesters
 - Missing required core courses for their degree
 
-**Solution**: Better Advise is a Python-based smart class planning tool designed to automate this process. It generates a recommended class plan for students to follow until graduation by analyzing three key inputs: degree requirements, graduate study plans, and course scheduling information. The tool can be executed on any platform (Windows, Linux, macOS) where Python is available.
+**Solution**: Better Advise is a Python-based smart class planning tool designed to automate this process. It generates a recommended class plan for students to follow until graduation by analyzing three key inputs: degree requirements, graduate study plans, and course scheduling information.
 
 **Key Benefits**:
 - Automated course scheduling without manual intervention
 - Prerequisite-aware planning
 - Semester credit hour capacity management
 - Web integration for real-time course data
-- 
+
 ## Overview
 
 Better Advise streamlines academic planning by:
@@ -281,26 +290,6 @@ better-advise/
 - **Web Scraping**: requests, beautifulsoup4
 - **Configuration**: tomli
 - **Build/Distribution**: pyinstaller
-
-## Key Components
-
-### PDFParser
-Extracts remaining courses from DegreeWorks PDF exports
-
-### ExcelParser
-Reads graduate study plans and 4-year schedules from Excel files
-
-### WebCrawler
-Scrapes the university course catalog for course details and prerequisites
-
-### PlanGenerator
-Uses topological sorting and directed acyclic graphs (DAG) to generate optimal course schedules
-
-### AcademicPlan
-Manages semesters and courses, validates the generated plan
-
-### ExcelExporter
-Formats and exports the course plan to Excel spreadsheets
 
 ## Development
 
