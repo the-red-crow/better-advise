@@ -55,7 +55,7 @@ Better Advise streamlines academic planning by:
 ### System Requirements
 
 - **Operating System**: Windows
-- **Python**: Version 3.13 or higher - https://www.python.org/downloads/release
+- **Python**: Version 3.13 or higher - https://www.python.org/downloads/windows/
 - **Git**: For cloning the repository (optional if downloading as ZIP) - https://git-scm.com/install/windows
 - **Disk Space**: Minimal (~170MB including dependencies)
 
