@@ -77,11 +77,12 @@ Better Advise requires the following Python libraries (automatically installed v
 See `requirements.txt` for the complete list of all dependencies including transitive dependencies.
 
 ## Download ##
-https://github.com/the-red-crow/better-advise/releases
+Direct Download of standalone application.
+https://github.com/the-red-crow/better-advise/releases 
 
 
 ## Setting up development environment in Windows for building
-Install Python 3.13 or higher from the official website: https://www.python.org/downloads/release
+Install Python 3.13 or higher from the official website: https://www.python.org/downloads/windows/
 
 - Ensure Python and pip are added to your system PATH during installation.
 
