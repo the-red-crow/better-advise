@@ -156,21 +156,17 @@ Or run via command line:
 python smart_advising_tool.py
 ```
 Note: The program is not signed and may trigger security warnings.
-For Windows 11: A blue box "Windows protected your PC" may appear. Click "More info" and then "Run anyway" to proceed.
-and then the Run anyway button to execute the program.
+For Windows 11: A blue box "Windows protected your PC" may appear. Click "More info" and 
+then "Run anyway" to proceed. Then the Run anyway button to execute the program.
 
 **Expected Output**:
 ```
-════════════════════════════════════════════════════
-        BETTER ADVISE - Academic Planning Tool
-════════════════════════════════════════════════════
-
-Select an option:
-1. Run
-2. Config
-3. Quit
-
-Enter your choice:
+Welcome to Better Advise!
+Please select from the following menu.
+1.      Run
+2.      Config
+0.      Quit
+>>
 ```
 
 ### Menu Options
